@@ -1,6 +1,8 @@
 import { betterAuth } from "better-auth";
 import { Pool } from "pg";
 import { passkey } from "better-auth/plugins/passkey"
+import { multiSession } from "better-auth/plugins"
+
 
 export const auth = betterAuth({
 	database: new Pool({
@@ -30,5 +32,6 @@ export const auth = betterAuth({
 	},
 	plugins: [
 		passkey(),
+		multiSession(), 
 	],
 });

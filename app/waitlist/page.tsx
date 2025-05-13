@@ -19,8 +19,7 @@ export default function WaitlistPage() {
   const { data, isPending } = useSession()
   const user = data?.user
   const isLoading = isPending
-  
-  // Debug logs
+    // Debug logs
   console.log("Waitlist Page - Session Data:", data);
   console.log("Waitlist Page - User:", user);
   console.log("Waitlist Page - Is Loading:", isLoading);
@@ -30,7 +29,6 @@ export default function WaitlistPage() {
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [referralData, setReferralData] = useState<{
     referralCode?: string
-    referralCount?: number
   }>({})
 
   // Check if the user is authenticated
@@ -58,13 +56,12 @@ export default function WaitlistPage() {
   useEffect(() => {
     if (!user) return
     
-    console.log("Waitlist Page - User detected, checking waitlist submission");
-    const checkWaitlistSubmission = async () => {
+    console.log("Waitlist Page - User detected, checking waitlist submission");    const checkWaitlistSubmission = async () => {
       try {
         const supabase = createBrowserClient()
         const { data, error } = await supabase
           .from("waitlist")
-          .select("referral_code, (select count(*) from waitlist as w2 where w2.referred_by = waitlist.referral_code) as referral_count")
+          .select("referral_code")
           .eq("email", user.email)
           .single()
 
@@ -74,7 +71,6 @@ export default function WaitlistPage() {
           setHasSubmitted(true)
           setReferralData({
             referralCode: data.referral_code,
-            referralCount: data.referral_count || 0,
           })
         }
       } catch (error) {
@@ -82,15 +78,13 @@ export default function WaitlistPage() {
       }
     }
 
-    checkWaitlistSubmission()
-  }, [user])
+    checkWaitlistSubmission()  }, [user])
 
   // Handle successful form submission
   const handleFormSubmitted = (referralCode: string) => {
     setHasSubmitted(true)
     setReferralData({
-      referralCode,
-      referralCount: 0
+      referralCode
     })
   }
 
@@ -136,7 +130,7 @@ export default function WaitlistPage() {
           className="text-[#a0a0a0] max-w-md mx-auto"
         >
           {hasSubmitted 
-            ? "Thanks for joining our waitlist. Share your referral code with friends!"
+            ? "Thanks for being part of our community!"
             : "Join our waitlist to be the first to experience our revolutionary security platform."
           }
         </motion.p>
@@ -156,23 +150,18 @@ export default function WaitlistPage() {
                 </div>
                 <h2 className="text-2xl font-semibold text-white">You're on the list!</h2>
                 <p className="text-sm text-[#a0a0a0] max-w-sm">
-                  Thanks for joining our waitlist. Share your referral code to move up in line!
+                  Thanks for joining our waitlist.
                 </p>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-6">
-                <ReferralSystem 
-                  referralCode={referralData.referralCode || ""} 
-                  referralCount={referralData.referralCount || 0}
-                />                <div className="flex justify-center pt-4">
+                <div className="flex justify-center pt-4">
                   <Link href="/account">
                     <Button variant="outline" className="w-full">
                       Manage Your Account
                     </Button>
                   </Link>
                 </div>
-              </div>
             </CardContent>
           </Card>
         ) : (

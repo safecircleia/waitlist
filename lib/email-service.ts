@@ -5,7 +5,7 @@ import { createServerClient } from "./supabase"
 
 // Initialize Resend with your API key
 const resend = new Resend(process.env.RESEND_API_KEY || "re_123456789")
-const FROM_EMAIL = "waitlist@safecircle.com"
+const FROM_EMAIL = "notify@waitlist.safecircle.com"
 
 /**
  * Sends an email notification to a referrer when someone uses their referral link
