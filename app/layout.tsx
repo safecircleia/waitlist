@@ -3,6 +3,7 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from "@/components/theme-provider"
+import { BackgroundGradientAnimation } from "@/components/background"
 
 export const metadata: Metadata = {
   title: "SafeCircle",
@@ -16,9 +17,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className="dark">
-      <body className={`${GeistSans.className} bg-[#080808]`}>
+      <body className={`${GeistSans.className}`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-          {children}
+          <BackgroundGradientAnimation
+            containerClassName="fixed inset-0 z-0 w-full h-full"
+            className="relative z-10 w-full min-h-screen"
+          >
+            {children}
+          </BackgroundGradientAnimation>
         </ThemeProvider>
       </body>
     </html>

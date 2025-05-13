@@ -11,10 +11,8 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import AnimatedBackground from "@/components/animated-background"
 import FloatingElements from "@/components/floating-elements"
 import GradientOrb from "@/components/gradient-orb"
-
 
 export default function Home() {
   const router = useRouter()
@@ -46,13 +44,10 @@ export default function Home() {
   }, [searchParams])
 
   return (
-    <main className="min-h-screen bg-[#080808] flex flex-col items-center justify-center py-10 px-4 relative overflow-hidden">
+    <main className="min-h-screen flex flex-col items-center justify-center py-10 px-4 relative overflow-hidden">
       <SplashScreen />
 
-      {/* Animated backgrounds */}
-      <div className="absolute inset-0 z-0">
-        <AnimatedBackground />
-      </div>
+      {/* Floating elements and gradient orbs for additional visual effects */}
       <FloatingElements />
       <GradientOrb position="top-right" color="from-violet-600/10 to-indigo-600/5" />
       <GradientOrb position="bottom-left" color="from-blue-600/10 to-violet-600/5" />

@@ -17,13 +17,19 @@ export default function SplashScreen() {
   }, [])
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isVisible && (
         <motion.div
           className="fixed inset-0 z-50 flex items-center justify-center bg-[#080808]"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          exit={{ 
+            opacity: 0,
+            y: -20 
+          }}
+          transition={{ 
+            duration: 0.8, 
+            ease: [0.19, 1, 0.22, 1] // Custom cubic-bezier for smooth ease-out
+          }}
         >
           <div className="absolute inset-0">
             <AnimatedBackground />
@@ -36,12 +42,14 @@ export default function SplashScreen() {
               opacity: 1,
             }}
             exit={{
-              scale: 1.1,
+              scale: 1.2,
               opacity: 0,
+              y: -30,
+              rotate: 10,
             }}
             transition={{
-              duration: 0.8,
-              ease: [0.22, 1, 0.36, 1],
+              duration: 1,
+              ease: [0.19, 1, 0.22, 1], // Custom cubic-bezier for smooth ease-out
             }}
             className="w-24 h-24 md:w-32 md:h-32 relative flex items-center justify-center"
           >
@@ -62,7 +70,16 @@ export default function SplashScreen() {
             <motion.div
               initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
+              exit={{ 
+                opacity: 0, 
+                scale: 1.2,
+                rotate: 15
+              }}
+              transition={{ 
+                delay: 0.2, 
+                duration: 0.5,
+                exit: { duration: 0.7 }
+              }}
               className="relative z-10 bg-transparent rounded-full w-full h-full flex items-center justify-center"
             >
               <div className="relative w-20 h-20 md:w-24 md:h-24">

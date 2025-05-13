@@ -9,11 +9,10 @@ import { Button } from "@/components/ui/button"
 import { createBrowserClient } from "@/lib/supabase"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import AnimatedBackground from "@/components/animated-background"
-import FloatingElements from "@/components/floating-elements"
 import GradientOrb from "@/components/gradient-orb"
 import { CheckCheck, ClipboardCheck } from "lucide-react"
 import ReferralSystem from "@/components/waitlist/referral-system"
+import { BackgroundGradientAnimation } from "@/components/background"
 
 export default function WaitlistPage() {
   const { data, isPending } = useSession()
@@ -87,17 +86,11 @@ export default function WaitlistPage() {
       referralCode
     })
   }
-
   return (
-    <main className="min-h-screen bg-[#080808] flex flex-col items-center justify-center py-10 px-4 relative overflow-hidden">
-      {/* Animated backgrounds */}
+    <main className="min-h-screen flex flex-col items-center justify-center py-10 px-4 relative overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <AnimatedBackground />
+        <BackgroundGradientAnimation />
       </div>
-      <FloatingElements />
-      <GradientOrb position="top-right" color="from-violet-600/10 to-indigo-600/5" />
-      <GradientOrb position="bottom-left" color="from-blue-600/10 to-violet-600/5" />
-
       <AnimatePresence>
         {showReferralBanner && (
           <motion.div
