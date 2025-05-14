@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Check, AlertCircle, Mail, Github, Fingerprint, Globe, Clock, Laptop, Smartphone } from "lucide-react";
-import { User, ConnectedAccounts, PasswordData, Session } from "./types";
+import { User, ConnectedAccounts, PasswordData } from "./types";
 
 interface SecurityTabProps {
   user: User;
@@ -27,8 +27,6 @@ interface SecurityTabProps {
   };
   connectProvider: (provider: string) => void;
   registerPasskey: () => Promise<void>;
-  activeSessions: Session[];
-  revokeSession: (sessionToken: string) => Promise<void>;
 }
 
 export function SecurityTab({
@@ -41,9 +39,7 @@ export function SecurityTab({
   isChangingPassword,
   connectedAccounts,
   connectProvider,
-  registerPasskey,
-  activeSessions,
-  revokeSession
+  registerPasskey
 }: SecurityTabProps) {
   return (
     <div className="mt-0 space-y-6">
@@ -247,68 +243,6 @@ export function SecurityTab({
               </Button>
             </motion.div>
           </motion.div>
-        </CardContent>
-      </Card>
-      
-      <Card className="border border-[#1a1a1a] bg-[#0f0f0f]/90 backdrop-blur-sm overflow-hidden">
-        <CardHeader>
-          <CardTitle>Active Sessions</CardTitle>
-          <CardDescription>
-            View and manage your active sessions across different devices.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {activeSessions.length === 0 ? (
-            <div className="text-center p-6">
-              <p className="text-sm text-[#a0a0a0]">No active sessions found.</p>
-            </div>
-          ) : (
-            activeSessions.map((session, index) => (
-              <motion.div 
-                key={index}
-                className={`flex items-center justify-between p-4 border border-[#1a1a1a] rounded-lg ${session.current ? 'border-green-600/30' : ''}`}
-                whileHover={{ scale: 1.01, backgroundColor: 'rgba(30,30,30,0.3)' }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="flex items-center gap-4">
-                  <div className={`bg-[#1a1a1a] p-2 rounded-md ${session.current ? 'bg-green-900/30 text-green-400' : ''}`}>
-                    {session.device.toLowerCase().includes("mobile") ? (
-                      <Smartphone className="h-5 w-5" />
-                    ) : (
-                      <Laptop className="h-5 w-5" />
-                    )}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-medium text-white">{session.device}</h4>
-                      {session.current && (
-                        <span className="text-[10px] px-1.5 py-0.5 bg-green-900/30 text-green-400 rounded-full">Current</span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-[#a0a0a0]">
-                      <Globe className="h-3 w-3" />
-                      <span>{session.location}</span>
-                      <span>•</span>
-                      <Clock className="h-3 w-3" />
-                      <span>{session.lastActive}</span>
-                    </div>
-                  </div>
-                </div>
-                {!session.current && session.sessionToken && (
-                  <motion.div whileTap={{ scale: 0.97 }}>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-xs text-red-400 hover:text-red-300 hover:bg-red-900/20"
-                      onClick={() => session.sessionToken && revokeSession(session.sessionToken)}
-                    >
-                      Revoke
-                    </Button>
-                  </motion.div>
-                )}
-              </motion.div>
-            ))
-          )}
         </CardContent>
       </Card>
     </div>

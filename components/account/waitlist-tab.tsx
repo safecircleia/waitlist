@@ -130,7 +130,7 @@ export function WaitlistTab({ referralData }: WaitlistTabProps) {
                 transition={{ delay: 0.6 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-              >                <Link href="/waitlist" passHref>
+              >                <Link href="/dashboard/waitlist" passHref>
                   <Button size="lg">
                     <Key className="mr-2 h-4 w-4" />
                     Join Waitlist

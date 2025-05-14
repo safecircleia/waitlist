@@ -16,14 +16,15 @@ import { motion } from "framer-motion";
 interface SharePopoutProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  referralCode?: string;
 }
 
-export function SharePopout({ isOpen, setIsOpen }: SharePopoutProps) {
+export function SharePopout({ isOpen, setIsOpen, referralCode }: SharePopoutProps) {
   const [copied, setCopied] = useState(false);
   
-  const shareMessage = `I just joined the SafeCircle waitlist! It's a revolutionary platform to protect childs online from childpredators. Join me and get early access: https://safecircle.ai/waitlist`;
+  const shareMessage = `I just joined the SafeCircle waitlist! It's a revolutionary platform to protect children online from predators. Join me and get early access: https://safecircle.ai/dashboard/waitlist${referralCode ? `?ref=${referralCode}` : ''}`;
   
-  const shareUrl = `https://app.safecircle.tech/waitlist`;
+  const shareUrl = `https://app.safecircle.tech/dashboard/waitlist${referralCode ? `?ref=${referralCode}` : ''}`;
   
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareUrl);

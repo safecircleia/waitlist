@@ -108,7 +108,7 @@ export function Sidebar({ currentTab, setCurrentTab, user, referralData }: Sideb
             className="px-0 text-amber-400"
             asChild
           >
-            <Link href="/waitlist">Join waitlist</Link>
+            <Link href="/dashboard/waitlist">Join waitlist</Link>
           </Button>
         </Alert>
       )}

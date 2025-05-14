@@ -3,20 +3,10 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import AnimatedBackground from "@/components/animated-background"
-import FloatingElements from "@/components/floating-elements"
-import GradientOrb from "@/components/gradient-orb"
 
 export default function NotFound() {
   return (
     <main className="min-h-screen bg-[#080808] flex flex-col items-center justify-center py-10 px-4 relative overflow-hidden">
-      {/* Animated backgrounds */}
-      <div className="absolute inset-0 z-0">
-        <AnimatedBackground />
-      </div>
-      <FloatingElements />
-      <GradientOrb position="top-right" color="from-violet-600/10 to-indigo-600/5" />
-      <GradientOrb position="bottom-left" color="from-blue-600/10 to-violet-600/5" />
 
       <motion.div
         initial={{ opacity: 0 }}

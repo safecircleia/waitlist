@@ -235,7 +235,7 @@ export function AlphaTab() {
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
           >
-            <Link href="/waitlist" passHref className="w-full block">
+            <Link href="/dashboard/waitlist" passHref className="w-full block">
               <Button variant="outline" className="w-full">
                 <Key className="mr-2 h-4 w-4" />
                 Join the Waitlist for Priority Access

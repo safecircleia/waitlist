@@ -4,8 +4,6 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useSession, signIn, signOut, authClient } from "@/lib/auth-client"
 import { createBrowserClient } from "@/lib/supabase"
-import { getDeviceSessions, revokeSession } from "@/lib/session-actions"
-import { BackgroundGradientAnimation } from "@/components/background"
 import { Button } from "@/components/ui/button"
 import { LogOut } from "lucide-react"
 
@@ -43,9 +41,7 @@ export default function AccountPage() {
     github: false,
     passkey: false,
   })
-    // Active sessions state - for the Security tab
-  const [activeSessions, setActiveSessions] = useState([])
-  
+
   // Check if user is authenticated
   useEffect(() => {
     if (!isLoading && !user) {
@@ -109,22 +105,6 @@ export default function AccountPage() {
       github: hasGitHub,
       passkey: hasPasskey,
     });
-  }, [user]);
-  
-  // Fetch active sessions
-  useEffect(() => {
-    if (!user) return;
-    
-    const fetchSessions = async () => {
-      try {
-        const sessions = await getDeviceSessions();
-        setActiveSessions(sessions);
-      } catch (error) {
-        console.error("Error fetching sessions:", error);
-      }
-    };
-    
-    fetchSessions();
   }, [user]);
   
   const handlePasswordChange = async (e: React.FormEvent) => {
@@ -204,22 +184,6 @@ export default function AccountPage() {
     }
   }
   
-  // Handle session revocation
-  const handleRevokeSession = async (sessionToken: string) => {
-    try {
-      const success = await revokeSession(sessionToken);
-      if (success) {
-        // Update sessions list after revoking a session
-        const updatedSessions = activeSessions.filter(
-          session => session.sessionToken !== sessionToken
-        );
-        setActiveSessions(updatedSessions);
-      }
-    } catch (error) {
-      console.error("Error revoking session:", error);
-    }
-  }
-  
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -231,11 +195,7 @@ export default function AccountPage() {
   if (!user) return null
   
   return (
-    <div className="min-h-screen bg-[#080808] py-10 px-4 relative">
-      {/* Animated backgrounds */}
-      <div className="absolute inset-0 z-0">
-        <BackgroundGradientAnimation />
-      </div>
+    <div className="min-h-screen py-10 px-4 relative">
       <div className="container max-w-6xl mx-auto relative z-10">
         <div className="mb-8 flex flex-col md:flex-row justify-between items-center">
           <div>
@@ -283,8 +243,6 @@ export default function AccountPage() {
                 connectedAccounts={connectedAccounts}
                 connectProvider={connectProvider}
                 registerPasskey={registerPasskey}
-                activeSessions={activeSessions}
-                revokeSession={handleRevokeSession}
               />
             )}
               

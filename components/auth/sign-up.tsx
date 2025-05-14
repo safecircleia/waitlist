@@ -28,6 +28,8 @@ export default function SignUp() {
 	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
+	const [successMessage, setSuccessMessage] = useState("");
+	const [errorMessage, setErrorMessage] = useState("");
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
@@ -41,6 +43,45 @@ export default function SignUp() {
 		}
 	};
 
+	const handleSignUp = async () => {
+		setLoading(true);
+		setErrorMessage("");
+		setSuccessMessage("");
+		if (password !== passwordConfirmation) {
+			setErrorMessage("Passwords do not match.");
+			setLoading(false);
+			return;
+		}
+		try {
+			await signUp.email({
+				email,
+				password,
+				name: `${firstName} ${lastName}`,
+				image: image ? await convertImageToBase64(image) : "",
+				callbackURL: "/dashboard",
+				fetchOptions: {
+					onResponse: () => {
+						setLoading(false);
+					},
+					onRequest: () => {
+						setLoading(true);
+					},
+					onError: (ctx) => {
+						setErrorMessage(ctx.error.message);
+						setLoading(false);
+					},
+					onSuccess: async () => {
+						setSuccessMessage("A verification link has been sent to your email. Please verify your email to continue.");
+						setLoading(false);
+					},
+				},
+			});
+		} catch (err: any) {
+			setErrorMessage(err?.message || "Something went wrong. Please try again.");
+			setLoading(false);
+		}
+	};
+
 	return (
 		<Card className="z-50 rounded-md rounded-t-none max-w-md">
 			<CardHeader>
@@ -51,6 +92,16 @@ export default function SignUp() {
 			</CardHeader>
 			<CardContent>
 				<div className="grid gap-4">
+					{successMessage && (
+						<div className="bg-green-100 text-green-800 rounded px-3 py-2 text-sm mb-2 border border-green-300">
+							{successMessage}
+						</div>
+					)}
+					{errorMessage && (
+						<div className="bg-red-100 text-red-800 rounded px-3 py-2 text-sm mb-2 border border-red-300">
+							{errorMessage}
+						</div>
+					)}
 					<div className="grid grid-cols-2 gap-4">
 						<div className="grid gap-2">
 							<Label htmlFor="first-name">First name</Label>
@@ -146,32 +197,10 @@ export default function SignUp() {
 						</div>
 					</div>
 					<Button
-						type="submit"
+						type="button"
 						className="w-full"
 						disabled={loading}
-						onClick={async () => {
-							await signUp.email({
-								email,
-								password,
-								name: `${firstName} ${lastName}`,
-								image: image ? await convertImageToBase64(image) : "",
-								callbackURL: "/waitlist",
-								fetchOptions: {
-									onResponse: () => {
-										setLoading(false);
-									},
-									onRequest: () => {
-										setLoading(true);
-									},
-									onError: (ctx) => {
-										toast.error(ctx.error.message);
-									},
-									onSuccess: async () => {
-										// No need to redirect as callbackURL will handle it
-									},
-								},
-							});
-						}}
+						onClick={handleSignUp}
 					>
 						{loading ? (
 							<Loader2 size={16} className="animate-spin" />
