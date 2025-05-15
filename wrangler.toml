@@ -1,12 +1,24 @@
 main = ".open-next/worker.js"
 name = "safecircle-waitlist"
+
+route = { pattern = "app.safecircle.tech/*", zone_name = "safecircle.tech" }
+
 compatibility_date = "2025-03-25"
 compatibility_flags = ["nodejs_compat"]
+
 [assets]
 directory = ".open-next/assets"
 binding = "ASSETS"
-[observability.logs]
+
+[observability]
 enabled = true
+head_sampling_rate = 0.1
+
+[placement]
+mode = "smart"
+
+
+
 
 
 
