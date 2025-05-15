@@ -1,12 +1,25 @@
 import { betterAuth } from "better-auth";
 import { Pool } from "pg";
-import { passkey } from "better-auth/plugins/passkey"
+import {
+	bearer,
+	multiSession,
+	twoFactor,
+	customSession,
+} from "better-auth/plugins";
+import { passkey } from "better-auth/plugins/passkey";
+import { nextCookies } from "better-auth/next-js";
 import { Resend } from "resend";
 
 export const auth = betterAuth({
 	database: new Pool({
 		connectionString: process.env.NEXT_PUBLIC_POSTGRESQL_URL as string,
 	}),
+	account: {
+		accountLinking: {
+			trustedProviders: ["google", "github", "twitter"],
+		},
+	},
+	appName: "SafeCircle",
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: true,
@@ -56,5 +69,20 @@ export const auth = betterAuth({
 	},
 	plugins: [
 		passkey(),
+		twoFactor({
+			otpOptions: {
+				async sendOTP({ user, otp }) {
+					const { getOtpEmailTemplate } = await import("./email-templates/otp-email");
+					const html = await getOtpEmailTemplate(user.name || "", otp);
+					const resend = new Resend(process.env.RESEND_API_KEY);
+					await resend.emails.send({
+						from: "SafeCircle <notify@waitlist.safecircle.tech>",
+						to: user.email,
+						subject: "Your SafeCircle OTP Code",
+						html,
+					});
+				},
+			},
+		}),
 	],
 });

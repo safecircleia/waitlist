@@ -8,6 +8,9 @@ import Background from "@/components/background"
 export const metadata: Metadata = {
   title: "SafeCircle",
   description: "Experience our revolutionary security platform.",
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({

@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowRight, Loader2, CheckCircle2, Mail, User, Building2 } from "lucide-react"
-import ReferralSystem from "./referral-system"
 import { useSearchParams } from "next/navigation"
 import NotificationIndicator from "../notification-indicator"
 import FormProgressBar from "./form-progress-bar"
@@ -83,50 +82,6 @@ export default function WaitlistForm({
 
     setFormProgress(progress)
   }, [watchedFields, isValid, isDirty])
-
-  // Check for referral code in URL
-  useEffect(() => {
-    const ref = searchParams.get("ref")
-    if (ref) {
-      setValue("referralCode", ref)
-    }
-  }, [searchParams, setValue])
-
-  // Check if user is already in the waitlist
-  useEffect(() => {
-    const checkUser = async () => {
-      setIsChecking(true)
-
-      try {
-        const supabase = createBrowserClient()
-        const { data, error } = await supabase
-          .from("waitlist")
-          .select("id, referralCode")
-          .eq("email", user?.email)
-          .single()
-
-        if (error) throw error
-
-        if (data) {
-          setFormStatus({
-            success: true,
-            message: "You are already on the waitlist!",
-            referralCode: data.referralCode,
-          })
-        }
-      } catch (error) {
-        console.error("Error checking waitlist status:", error)
-      } finally {
-        setIsChecking(false)
-      }
-    }
-
-    if (user?.email) {
-      checkUser()
-    } else {
-      setIsChecking(false)
-    }
-  }, [user?.email])
 
 
   // Check if user has already submitted the waitlist form

@@ -1,11 +1,35 @@
 import { createAuthClient } from "better-auth/react";
-import { passkeyClient } from "better-auth/client/plugins"
+import {
+	passkeyClient,
+	twoFactorClient,
+	multiSessionClient,
+} from "better-auth/client/plugins";
+import { toast } from "sonner";
 
-export const authClient = createAuthClient({
-    baseURL: process.env.NEXT_PUBLIC_APP_URL,
-    plugins: [
-        passkeyClient(),
-    ],
-})
+export const client = createAuthClient({
+	plugins: [
+		twoFactorClient({
+			onTwoFactorRedirect() {
+				window.location.href = "/two-factor";
+			},
+		}),
+		passkeyClient(),
+		multiSessionClient(),
+	],
+	fetchOptions: {
+		onError(e) {
+			if (e.error.status === 429) {
+				toast.error("Too many requests. Please try again later.");
+			}
+		},
+	},
+});
 
-export const { signIn, signUp, useSession, signOut } = createAuthClient()
+export const {
+	signUp,
+	signIn,
+	signOut,
+	useSession,
+} = client;
+
+client.$store.listen("$sessionSignal", async () => {});

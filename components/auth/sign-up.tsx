@@ -47,11 +47,32 @@ export default function SignUp() {
 		setLoading(true);
 		setErrorMessage("");
 		setSuccessMessage("");
+
+		// Validation checks
+		if (!email || !password || !firstName || !lastName) {
+			setErrorMessage("Please fill in all required fields.");
+			setLoading(false);
+			return;
+		}
+
 		if (password !== passwordConfirmation) {
 			setErrorMessage("Passwords do not match.");
 			setLoading(false);
 			return;
 		}
+
+		if (password.length < 8) {
+			setErrorMessage("Password must be at least 8 characters long.");
+			setLoading(false);
+			return;
+		}
+
+		if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+			setErrorMessage("Please enter a valid email address.");
+			setLoading(false);
+			return;
+		}
+
 		try {
 			await signUp.email({
 				email,
@@ -67,7 +88,19 @@ export default function SignUp() {
 						setLoading(true);
 					},
 					onError: (ctx) => {
-						setErrorMessage(ctx.error.message);
+						// Handle specific error cases
+						const errorMessage = ctx.error.message.toLowerCase();
+						if (errorMessage.includes("email already exists")) {
+							setErrorMessage("An account with this email already exists.");
+						} else if (errorMessage.includes("invalid email")) {
+							setErrorMessage("Please enter a valid email address.");
+						} else if (errorMessage.includes("password")) {
+							setErrorMessage("Password must be at least 8 characters long and contain a mix of letters, numbers, and special characters.");
+						} else if (errorMessage.includes("network")) {
+							setErrorMessage("Network error. Please check your internet connection and try again.");
+						} else {
+							setErrorMessage(ctx.error.message || "Something went wrong. Please try again.");
+						}
 						setLoading(false);
 					},
 					onSuccess: async () => {
@@ -77,7 +110,12 @@ export default function SignUp() {
 				},
 			});
 		} catch (err: any) {
-			setErrorMessage(err?.message || "Something went wrong. Please try again.");
+			// Handle unexpected errors
+			if (err?.message?.includes("network")) {
+				setErrorMessage("Network error. Please check your internet connection and try again.");
+			} else {
+				setErrorMessage("An unexpected error occurred. Please try again later.");
+			}
 			setLoading(false);
 		}
 	};

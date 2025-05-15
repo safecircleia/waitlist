@@ -8,7 +8,7 @@ import { useSession } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTrigger, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -116,6 +116,9 @@ export default function Home() {
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md border border-[#1a1a1a] bg-[#0f0f0f]/95 backdrop-blur-sm p-0 shadow-xl shadow-purple-500/10">
+                  <DialogHeader className="px-6 pt-6">
+                    <DialogTitle>Welcome to SafeCircle</DialogTitle>
+                  </DialogHeader>
                   <div className="bg-gradient-to-b from-[#0f0f0f]/90 to-[#0a0a0a]/90 p-6 rounded-lg overflow-hidden">
                     <Tabs value={authTab} onValueChange={setAuthTab} className="w-full">
                       <TabsList className="w-full flex mb-6 bg-[#111]/80 border border-[#222]">

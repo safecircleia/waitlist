@@ -5,8 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User } from "./types";
 import { useState } from "react";
-import { toast } from "@/hooks/use-toast";
-import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { client } from "@/lib/auth-client";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Edit, X, Loader2 } from "lucide-react";
 
 interface ProfileTabProps {
   user: User;
@@ -15,29 +18,72 @@ interface ProfileTabProps {
 export function ProfileTab({ user }: ProfileTabProps) {
   const [verifying, setVerifying] = useState(false);
   const [verifyStatus, setVerifyStatus] = useState<string | null>(null);
+  const [name, setName] = useState<string>(user.name);
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const convertImageToBase64 = async (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
   const handleVerifyEmail = async () => {
     if (!user.email) return;
     setVerifying(true);
     setVerifyStatus(null);
     try {
-      await authClient.sendVerificationEmail({
+      await client.sendVerificationEmail({
         email: user.email,
         callbackURL: "/account", // or your preferred redirect
       });
-      toast({
-        title: "Verification email sent!",
-        description: "Check your inbox for a verification link.",
-      });
+      toast.success("Verification email sent! Check your inbox for a verification link.");
       setVerifyStatus("Verification email sent! Check your inbox.");
     } catch (err: any) {
-      toast({
-        title: "Failed to send verification email",
-        description: err?.message || "Please try again later.",
-      });
+      toast.error(err?.message || "Failed to send verification email. Please try again later.");
       setVerifyStatus("Failed to send verification email. Please try again later.");
     } finally {
       setVerifying(false);
+    }
+  };
+
+  const handleSaveChanges = async () => {
+    setIsLoading(true);
+    try {
+      await client.updateUser({
+        image: image ? await convertImageToBase64(image) : undefined,
+        name: name !== user.name ? name : undefined,
+        fetchOptions: {
+          onSuccess: () => {
+            toast.success("Profile updated successfully");
+            router.refresh();
+          },
+          onError: (error) => {
+            toast.error(error.error.message);
+          },
+        },
+      });
+      setImage(null);
+      setImagePreview(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,10 +111,51 @@ export function ProfileTab({ user }: ProfileTabProps) {
             <Label htmlFor="display-name">Display Name</Label>
             <Input
               id="display-name"
-              defaultValue={user.name || ''}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="bg-[#1a1a1a] border-[#333333]"
             />
           </motion.div>
+
+          <motion.div 
+            className="space-y-1"
+            initial={{ opacity: 0, y: 10 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.2 }}
+          >
+            <Label htmlFor="image">Profile Image</Label>
+            <div className="flex items-end gap-4">
+              {(imagePreview || user.image) && (
+                <div className="relative w-16 h-16 rounded-sm overflow-hidden">
+                  <Image
+                    src={imagePreview || user.image || ''}
+                    alt="Profile preview"
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
+              )}
+              <div className="flex items-center gap-2 w-full">
+                <Input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full text-muted-foreground bg-[#1a1a1a] border-[#333333]"
+                />
+                {imagePreview && (
+                  <X
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setImage(null);
+                      setImagePreview(null);
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          </motion.div>
+
           <motion.div 
             className="space-y-1"
             initial={{ opacity: 0, y: 10 }} 
@@ -115,7 +202,17 @@ export function ProfileTab({ user }: ProfileTabProps) {
             whileTap={{ scale: 0.98 }}
             className="w-full"
           >
-            <Button className="w-full">Save changes</Button>
+            <Button 
+              className="w-full" 
+              onClick={handleSaveChanges}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <Loader2 size={15} className="animate-spin" />
+              ) : (
+                "Save changes"
+              )}
+            </Button>
           </motion.div>
         </CardFooter>
       </Card>

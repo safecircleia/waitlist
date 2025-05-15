@@ -1,25 +1,31 @@
 // Common types for account components
 export interface User {
-  name?: string | null;
-  email?: string | null;
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
   image?: string | null;
-  id?: string;
-  emailVerified?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-  identities?: any[];
-  factors?: any[];
+  twoFactorEnabled?: boolean;
+  passkeys?: { id: string; name?: string; }[];
 }
 
 export interface ReferralData {
-  referralCode?: string;
-  hasJoinedWaitlist?: boolean;
+  code: string;
+  count: number;
+  limit: number;
 }
 
 export interface ConnectedAccounts {
-  google: boolean;
-  github: boolean;
-  passkey: boolean;
+  github?: {
+    id: string;
+    username: string;
+  };
+  google?: {
+    id: string;
+    email: string;
+  };
 }
 
 export interface PasswordData {
@@ -29,9 +35,8 @@ export interface PasswordData {
 }
 
 export interface Session {
-  device: string;
-  location: string;
-  lastActive: string;
-  current: boolean;
-  sessionToken?: string;
+  id: string;
+  sessionToken: string;
+  userAgent?: string;
+  current?: boolean;
 }

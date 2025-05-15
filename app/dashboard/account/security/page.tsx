@@ -68,16 +68,30 @@ export default function AccountSecurityPage() {
     }
     
     try {
-      // Simulate password change
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const response = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to change password');
+      }
+
       setPasswordSuccess("Password changed successfully")
       setPasswordData({
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
       })
-    } catch (error) {
-      setPasswordError("Failed to change password")
+    } catch (error: any) {
+      setPasswordError(error.message || "Failed to change password")
       console.error("Error changing password:", error)
     } finally {
       setIsChangingPassword(false)

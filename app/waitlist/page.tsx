@@ -127,9 +127,9 @@ export default function WaitlistPage() {
             </CardHeader>
             <CardContent>
                 <div className="flex justify-center pt-4">
-                  <Link href="/account">
+                  <Link href="/dashboard">
                     <Button variant="outline" className="w-full">
-                      Manage Your Account
+                      Dashboard
                     </Button>
                   </Link>
                 </div>
