@@ -5,8 +5,6 @@ import { createServerClient } from "@/lib/supabase"
 import { Resend } from "resend"
 import { getWaitlistConfirmationEmailTemplate } from "@/lib/email-templates/waitlist-confirmation-email"
 
-export const runtime = 'nodejs';
-
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   name: z.string().min(2, "Name must be at least 2 characters").max(100),

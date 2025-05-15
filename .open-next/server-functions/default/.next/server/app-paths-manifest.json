@@ -1,0 +1,15 @@
+{
+  "/api/waitlist/route": "app/api/waitlist/route.js",
+  "/api/auth/[...all]/route": "app/api/auth/[...all]/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/(auth)/two-factor/otp/page": "app/(auth)/two-factor/otp/page.js",
+  "/(auth)/two-factor/page": "app/(auth)/two-factor/page.js",
+  "/page": "app/page.js",
+  "/waitlist/page": "app/waitlist/page.js",
+  "/dashboard/account/profile/page": "app/dashboard/account/profile/page.js",
+  "/dashboard/account/security/page": "app/dashboard/account/security/page.js",
+  "/dashboard/alpha/page": "app/dashboard/alpha/page.js",
+  "/dashboard/donate/page": "app/dashboard/donate/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/waitlist/page": "app/dashboard/waitlist/page.js"
+}

@@ -1,0 +1,112 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "dynamicRoutes": [
+    {
+      "page": "/api/auth/[...all]",
+      "regex": "^/api/auth/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPall": "nxtPall"
+      },
+      "namedRegex": "^/api/auth/(?<nxtPall>.+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/dashboard/account/profile",
+      "regex": "^/dashboard/account/profile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/account/profile(?:/)?$"
+    },
+    {
+      "page": "/dashboard/account/security",
+      "regex": "^/dashboard/account/security(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/account/security(?:/)?$"
+    },
+    {
+      "page": "/dashboard/alpha",
+      "regex": "^/dashboard/alpha(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/alpha(?:/)?$"
+    },
+    {
+      "page": "/dashboard/donate",
+      "regex": "^/dashboard/donate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/donate(?:/)?$"
+    },
+    {
+      "page": "/dashboard/waitlist",
+      "regex": "^/dashboard/waitlist(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/waitlist(?:/)?$"
+    },
+    {
+      "page": "/two-factor",
+      "regex": "^/two\\-factor(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/two\\-factor(?:/)?$"
+    },
+    {
+      "page": "/two-factor/otp",
+      "regex": "^/two\\-factor/otp(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/two\\-factor/otp(?:/)?$"
+    },
+    {
+      "page": "/waitlist",
+      "regex": "^/waitlist(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/waitlist(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "RSC",
+    "varyHeader": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch",
+    "prefetchHeader": "Next-Router-Prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "Next-Router-Segment-Prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  },
+  "rewrites": []
+}
