@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { nanoid } from "nanoid"
 import { createServerClient } from "@/lib/supabase"
-import { sendReferralNotification } from "@/lib/email-service"
 import { Resend } from "resend"
 import { getWaitlistConfirmationEmailTemplate } from "@/lib/email-templates/waitlist-confirmation-email"
 
@@ -50,11 +49,6 @@ export async function POST(req: NextRequest) {
       subject: "Welcome to SafeCircle Waitlist!",
       html,
     })
-
-    // Send notification to referrer if applicable
-    if (referredBy) {
-      await sendReferralNotification(referredBy, validatedData.name, validatedData.email)
-    }
 
     return NextResponse.json({ success: true, message: "Successfully joined the waitlist!", referralCode })
   } catch (error) {
