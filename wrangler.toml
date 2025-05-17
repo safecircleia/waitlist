@@ -3,8 +3,8 @@ name = "safecircle-waitlist"
 
 route = { pattern = "app.safecircle.tech/*", zone_name = "safecircle.tech" }
 
-compatibility_date = "2025-03-25"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2025-05-05"
+compatibility_flags = ["nodejs_compat", "nodejs_compat_populate_process_env"]
 
 [assets]
 directory = ".open-next/assets"
