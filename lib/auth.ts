@@ -24,9 +24,11 @@ export const auth = betterAuth({
 		enabled: true,
 		requireEmailVerification: true,
 		minPasswordLength: 8,
-    	maxPasswordLength: 20,
+		maxPasswordLength: 20,
 		sendResetPassword: async ({ user, url, token }, request) => {
-			const { getResetPasswordEmailTemplate } = await import("./email-templates/reset-password-email");
+			const { getResetPasswordEmailTemplate } = await import(
+				"./email-templates/reset-password-email"
+			);
 			const html = await getResetPasswordEmailTemplate(user.name || "", url);
 			const resend = new Resend(process.env.RESEND_API_KEY);
 			await resend.emails.send({
@@ -36,11 +38,14 @@ export const auth = betterAuth({
 				html,
 			});
 		},
-	},	emailVerification: {
-        sendOnSignUp: true,
+	},
+	emailVerification: {
+		sendOnSignUp: true,
 		autoSignInAfterVerification: true,
-	    sendVerificationEmail: async ({ user, url, token }, request) => {
-			const { getVerificationEmailTemplate } = await import("./email-templates/verification-email");
+		sendVerificationEmail: async ({ user, url, token }, request) => {
+			const { getVerificationEmailTemplate } = await import(
+				"./email-templates/verification-email"
+			);
 			const html = await getVerificationEmailTemplate(user.name || "", url);
 			const resend = new Resend(process.env.RESEND_API_KEY);
 			await resend.emails.send({
@@ -49,22 +54,20 @@ export const auth = betterAuth({
 				subject: "Verify Your SafeCircle Account",
 				html,
 			});
-    	},
-    },
+		},
+	},
 	socialProviders: {
 		google: {
-			clientId: process.env.GOOGLE_CLIENT_ID!,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+			clientId: process.env.GOOGLE_CLIENT_ID || "",
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
 		},
-
 		github: {
-			clientId: process.env.GITHUB_CLIENT_ID!,
-			clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+			clientId: process.env.GITHUB_CLIENT_ID || "",
+			clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
 		},
-
 		twitter: {
-			clientId: process.env.TWITTER_CLIENT_ID!,
-			clientSecret: process.env.TWITTER_CLIENT_SECRET!,
+			clientId: process.env.TWITTER_CLIENT_ID || "",
+			clientSecret: process.env.TWITTER_CLIENT_SECRET || "",
 		},
 	},
 	plugins: [
@@ -72,7 +75,9 @@ export const auth = betterAuth({
 		twoFactor({
 			otpOptions: {
 				async sendOTP({ user, otp }) {
-					const { getOtpEmailTemplate } = await import("./email-templates/otp-email");
+					const { getOtpEmailTemplate } = await import(
+						"./email-templates/otp-email"
+					);
 					const html = await getOtpEmailTemplate(user.name || "", otp);
 					const resend = new Resend(process.env.RESEND_API_KEY);
 					await resend.emails.send({

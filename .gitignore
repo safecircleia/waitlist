@@ -18,6 +18,7 @@ yarn-error.log*
 
 # env files
 .env*
+.vars
 
 # vercel
 .vercel
@@ -28,3 +29,4 @@ next-env.d.ts
 
 # open-next
 .open-next
+.dev.vars
