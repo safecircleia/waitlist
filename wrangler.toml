@@ -2,7 +2,7 @@ main = ".open-next/worker.js"
 name = "safecircle-waitlist"
 
 routes = [
-  { pattern = "app.safecircle.tech/*", custom_domain = true }
+  { pattern = "app.safecircle.tech", custom_domain = true }
 ]
 compatibility_date = "2025-05-05"
 compatibility_flags = ["nodejs_compat", "nodejs_compat_populate_process_env"]
