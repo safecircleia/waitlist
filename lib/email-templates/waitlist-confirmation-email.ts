@@ -4,7 +4,7 @@
  * Email template for waitlist confirmation
  * Following SafeCircle's design language with dark theme and purple accents
  */
-export async function getWaitlistConfirmationEmailTemplate(userName: string, referralCode: string) {
+export async function getWaitlistConfirmationEmailTemplate(userName: string) {
   return `
     <!DOCTYPE html>
     <html>
@@ -73,17 +73,6 @@ export async function getWaitlistConfirmationEmailTemplate(userName: string, ref
             color: #a78bfa;
             font-weight: 500;
           }
-          .referral-code {
-            background-color: rgba(139, 92, 246, 0.1);
-            border: 1px solid #7c3aed;
-            padding: 12px;
-            border-radius: 4px;
-            text-align: center;
-            margin: 24px 0;
-            font-family: monospace;
-            font-size: 18px;
-            color: #a78bfa;
-          }
         </style>
       </head>
       <body>
@@ -98,13 +87,8 @@ export async function getWaitlistConfirmationEmailTemplate(userName: string, ref
             <p>Hello ${userName},</p>
             <p>Thank you for joining the <span class="highlight">SafeCircle</span> waitlist! We're excited to have you on board as we work to make the internet safer for everyone.</p>
             
-            <p>Your unique referral code is:</p>
-            <div class="referral-code">${referralCode}</div>
-            
-            <p>Share this code with friends and family to help them get priority access to SafeCircle. The more people you refer, the higher your priority in the waitlist!</p>
-            
             <div style="text-align: center;">
-              <a href="https://safecircle.tech?ref=${referralCode}" class="button">Share with Friends</a>
+              <a href="https://app.safecircle.tech/dashboard/waitlist" class="button">View Waitlist Status</a>
             </div>
             
             <p>We'll keep you updated on our progress and notify you when it's your turn to access SafeCircle.</p>
