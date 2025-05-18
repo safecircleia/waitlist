@@ -1,8 +1,9 @@
 main = ".open-next/worker.js"
 name = "safecircle-waitlist"
 
-route = { pattern = "app.safecircle.tech/*", zone_name = "safecircle.tech" }
-
+routes = [
+  { pattern = "app.safecircle.tech/*", custom_domain = true }
+]
 compatibility_date = "2025-05-05"
 compatibility_flags = ["nodejs_compat", "nodejs_compat_populate_process_env"]
 
@@ -16,9 +17,5 @@ enabled = true
 [placement]
 mode = "smart"
 
-
-
-
-
-
-
+[env]
+vars = { SUPABASE_URL = "", SUPABASE_SERVICE_ROLE_KEY = "", NEXT_PUBLIC_SUPABASE_URL = "", NEXT_PUBLIC_SUPABASE_ANON_KEY = "", NEXT_PUBLIC_APP_URL = "", BETTER_AUTH_SECRET = "", BETTER_AUTH_URL = "", NEXT_PUBLIC_POSTGRESQL_URL = "", GITHUB_CLIENT_ID = "", GITHUB_CLIENT_SECRET = "", TWITTER_CLIENT_ID = "", TWITTER_CLIENT_SECRET = "", GOOGLE_CLIENT_ID = "", GOOGLE_CLIENT_SECRET = "", RESEND_API_KEY = "" }
