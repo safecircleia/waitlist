@@ -14,6 +14,7 @@ export const auth = betterAuth({
 	database: new Pool({
 		connectionString: process.env.NEXT_PUBLIC_POSTGRESQL_URL as string,
 	}),
+	trustedOrigins: ["https://app.safecircle.tech", "http://localhost:3000"],
 	account: {
 		accountLinking: {
 			trustedProviders: ["google", "github", "twitter"],
