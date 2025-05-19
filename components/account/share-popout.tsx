@@ -21,7 +21,7 @@ interface SharePopoutProps {
 export function SharePopout({ isOpen, setIsOpen }: SharePopoutProps) {
   const [copied, setCopied] = useState(false);
   
-  const shareMessage = `I just joined the SafeCircle waitlist! It's a revolutionary platform to protect children online from predators. Join me and get early access: https://safecircle.ai/dashboard/waitlist`;
+  const shareMessage = `I just joined the SafeCircle waitlist! It's a revolutionary platform to protect children online from predators. Join me and get early access: https://app.safecircle.tech/dashboard/waitlist`;
   
   const shareUrl = `https://app.safecircle.tech/dashboard/waitlist`;
   
